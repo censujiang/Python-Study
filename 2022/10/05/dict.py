@@ -1,0 +1,30 @@
+dict_db_server = {"server":"localhost","datebase":"root", "port":3306, "user":"root", "password":"123456"}
+print(dict_db_server)
+print("=====================================")
+for item in dict_db_server:
+    print(item)
+print("=====================================")
+for key,value in dict_db_server.items():
+    print(key,value)
+print("=====================================")
+for key in dict_db_server.keys():
+    print(key)
+print("=====================================")
+for value in dict_db_server.values():
+    print(value)
+print("=====================================")
+dict_new = dict_db_server.copy()
+print(dict_new)
+print("=====================================")
+dict_new.fromkeys(dict_db_server)
+print(dict_new)
+print("=====================================")
+print(dict_new.get("server"))
+print("=====================================")
+print(dict_new.pop("datebase"))
+print("=====================================")
+dict_new.update({"table":"comments"})
+print(dict_new)
+print("=====================================")
+dict_new.clear()
+print(dict_new)
