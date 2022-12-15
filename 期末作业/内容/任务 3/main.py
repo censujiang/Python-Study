@@ -1,7 +1,5 @@
 import csv
 import sqlite3
-from functools import reduce
-from operator import attrgetter
 
 # 连接到SQLite3数据库
 conn = sqlite3.connect('students.db')
@@ -87,17 +85,57 @@ with conn:
         students.append(row)
 
 # 获取平时成绩最好的学生信息
-best_regular_grade_student = max(students, key=lambda x: x["regular_grade"])
-print("平时成绩最好的学生:", best_regular_grade_student)
+def get_best_quiz_grade(students):
+  best_quiz_grade = 0
+  est_quiz_grade_student = None
+  
+  for student in students:
+    index, name, quiz_grade, exam_grade, total_grade = student
+    if quiz_grade > best_quiz_grade:
+      best_quiz_grade = quiz_grade
+      est_quiz_grade_student = student
+
+  return est_quiz_grade_student
+est_quiz_grade_student = get_best_quiz_grade(students)
+print("平时成绩最好的学生:",est_quiz_grade_student)
 # 获取期末成绩最好的学生信息
-best_final_grade_student = max(students, key=lambda x: x["final_grade"])
-print("期末成绩最好的学生:", best_final_grade_student)
+def get_best_exam_grade(students):
+  best_exam_grade = 0
+  best_exam_grade_student = None
+  
+  for student in students:
+    index, name, quiz_grade, exam_grade, total_grade = student
+    if exam_grade > best_exam_grade:
+      best_exam_grade = exam_grade
+      best_exam_grade_student = student
+
+  return best_exam_grade_student
+best_exam_grade_student = get_best_exam_grade(students)
+print("期末成绩最好的学生:",best_exam_grade_student)
 # 获取总成绩最好的学生信息
-best_grade_student = max(students, key=lambda x: x["grade"])
-print("总成绩最好的学生:", best_grade_student)
+def get_best_total_grade(students):
+  best_total_grade = 0
+  best_total_grade_student = None
+  
+  for student in students:
+    index, name, quiz_grade, exam_grade, total_grade = student
+    if total_grade > best_total_grade:
+      best_total_grade = total_grade
+      best_total_grade_student = student
+
+  return best_total_grade_student
+best_total_grade_student = get_best_total_grade(students)
+print("总成绩最好的学生:",best_total_grade_student)
 # 将学生根据总成绩进行排序
-sorted_students = sorted(students, key=lambda x: x["grade"])
-print("按照总成绩排序后的学生:", sorted_students)
+def sort_by_total_grade(students):
+  return sorted(students, key=lambda student: student[4], reverse=True)
+sorted_students = sort_by_total_grade(students)
+print("根据总成绩排序后的学生信息:",sorted_students)
 # 获取总成绩的平均值
-average_grade = reduce(lambda x, y: x + y, map(lambda x: x["grade"], students)) / len(students)
-print("总成绩的平均值:", average_grade)
+def get_average_total_grade(students):
+  total = 0
+  for student in students:
+    total += student[4]
+  return total / len(students)
+average_total_grade = get_average_total_grade(students)
+print("总成绩的平均值:",average_total_grade)
