@@ -1,32 +1,30 @@
-# 首先导入需要的库
-import random
 import csv
+from random import randint
 
-# 打开文件并读取内容
-with open("1-2班成绩表.csv" ,encoding='gb18030') as file:
-    reader = csv.reader(file)
-    # 读取所有行
-    rows = list(reader)
+# 计算总成绩
+def calculate_grade(regular_grade, final_grade):
+    return round(regular_grade * 0.4 + final_grade * 0.6, 2)
 
-# 遍历每一行，为每个学生提供平时成绩和期末成绩
-for row in rows:
-    # 取出学号和姓名
-    student_id = row[0]
-    name = row[1]
+# 读取csv文件
+def read_csv(filename):
+    with open(filename, "r", newline="" , encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        # 跳过第一行
+        next(reader)
+        for row in reader:
+            regular_grade = randint(0, 100)
+            final_grade = randint(0, 100)
+            grade = calculate_grade(regular_grade, final_grade)
+            # 将同学信息写入文件
+            write_csv(filename, row[0], row[1], regular_grade, final_grade, grade)
 
-    # 使用randint函数生成平时成绩和期末成绩
-    midterm_grade = random.randint(0, 100)
-    final_grade = random.randint(0, 100)
+# 写入csv文件
+def write_csv(filename, student_id, name, regular_grade, final_grade, grade):
+    with open(filename, "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        # 注意需要将整数，浮点数转换为字符串再写入
+        writer.writerow([student_id, name, str(regular_grade), str(final_grade), str(grade)])
 
-    # 计算总成绩
-    total_grade = round(midterm_grade * 0.4 + final_grade * 0.6, 2)
-
-    # 将学生成绩信息添加到行中
-    row.append(midterm_grade)
-    row.append(final_grade)
-    row.append(total_grade)
-
-# 写入文件
-with open("1-2班成绩表.csv", "w") as file:
-    writer = csv.writer(file)
-    writer.writerows(rows)
+# 两个文件分别这样做一次
+read_csv("1-2班成绩表.csv")
+read_csv("3-4班成绩表.csv")
