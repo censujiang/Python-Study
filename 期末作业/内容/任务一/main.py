@@ -20,7 +20,7 @@ def read_csv(filename):
 
 # 写入csv文件
 def write_csv(filename, student_id, name, regular_grade, final_grade, grade):
-    with open(filename, "w", newline="") as csvfile:
+    with open(filename, "a", newline="" ,encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         # 注意需要将整数，浮点数转换为字符串再写入
         writer.writerow([student_id, name, str(regular_grade), str(final_grade), str(grade)])
